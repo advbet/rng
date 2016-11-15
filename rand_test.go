@@ -212,6 +212,8 @@ func TestIntnFrequencyMonobit(t *testing.T) {
 }
 
 func TestFloat64Sum(t *testing.T) {
+	// This test computes sum of N random float64 variables in range
+	// [-0.5; 0.5) and checks the result against expected sum distribution.
 	if !cfg.long {
 		t.Skip("skipping, run with --long to enable long RNG tests")
 	}
@@ -222,7 +224,9 @@ func TestFloat64Sum(t *testing.T) {
 	for i := 0; i < N; i++ {
 		sum += Float64() - 0.5
 	}
-	// sigma of sum of uniform distribution (-0.5; 0.5) is sqrt(N/12)
+	// V = (max-min)^2/12 = 1/12
+	// V_sum = N*V
+	// sigma_sum = sqrt(V_sum) = sqrt(N*V) = sqrt(N/12)
 	Sobs := math.Abs(sum) / math.Sqrt(float64(N)/12.0)
 	P := math.Erfc(Sobs / math.Sqrt(2.0))
 	t.Log("P = ", P)
@@ -233,6 +237,8 @@ func TestFloat64Sum(t *testing.T) {
 }
 
 func TestIntnSum(t *testing.T) {
+	// This test computes sum of N random integer variables in range [-5; 5]
+	// and checks the result against expected sum distribution.
 	if !cfg.long {
 		t.Skip("skipping, run with --long to enable long RNG tests")
 	}
@@ -245,7 +251,9 @@ func TestIntnSum(t *testing.T) {
 		//sum += (int(Uint64Bits(8)) % 11) - 5
 		sum += Intn(11) - 5
 	}
-	// sigma of sum of [-5; 5] distribution is is sqrt(N*10)
+	// V = ((max - min + 1)^2 - 1) / 12 = 10
+	// V_sum = N*V
+	// sigma_sum = sqrt(V_sum) = sqrt(N*V) = sqrt(N*10)
 	Sobs := math.Abs(float64(sum)) / math.Sqrt(float64(N)*10.0)
 	P := math.Erfc(Sobs / math.Sqrt(2.0))
 	t.Log("P = ", P)
@@ -278,7 +286,7 @@ func TestIntnHistogram(t *testing.T) {
 	}
 }
 
-func TestFloat64Hist(t *testing.T) {
+func TestFloat64Histogram(t *testing.T) {
 	if !cfg.long {
 		t.Skip("skipping, run with --long to enable long RNG tests")
 	}
