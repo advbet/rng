@@ -186,6 +186,34 @@ func TestPerm(t *testing.T) {
 	assert.Len(t, unique, N)
 }
 
+func TestSample(t *testing.T) {
+	tests := []struct {
+		n int
+		k int
+	}{
+		{10, 0},
+		{10, 1},
+		{10, 5},
+		{10, 8},
+		{10, 10},
+	}
+
+	for _, test := range tests {
+		s := Sample(test.n, test.k)
+
+		unique := make(map[int]struct{})
+		for _, val := range s {
+			unique[val] = struct{}{}
+			assert.True(t, val >= 0 && val < test.n)
+		}
+
+		assert.Len(t, s, test.k)
+		assert.Len(t, unique, test.k)
+	}
+
+	assert.Len(t, Sample(2, 10), 2)
+}
+
 func TestIntnFrequencyMonobit(t *testing.T) {
 	if !cfg.long {
 		t.Skip("skipping, run with --long to enable long RNG tests")

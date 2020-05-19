@@ -1,6 +1,8 @@
 package rng
 
-import "io"
+import (
+	"io"
+)
 
 // ReadUint64Bits reads a random uint64 value in range [0, 2^n) from a random
 // source. In other words returned uint64 will have n least significant bits set
@@ -91,4 +93,30 @@ func ReadPerm(src io.Reader, n int) []int {
 		m[j] = i
 	}
 	return m
+}
+
+// ReadSample returns random k integers from a range [0 n). If k > n then only n
+// integers are returned.
+//
+// This function consumes entropy from a given entroy source src.
+func ReadSample(src io.Reader, n int, k int) []int {
+	if k > n {
+		k = n
+	}
+
+	if k > n/2 {
+		return ReadPerm(src, n)[0:k]
+	}
+
+	sample := make([]int, 0, k)
+	cache := make(map[int]struct{})
+	for len(sample) < k {
+		r := ReadIntn(src, n)
+		if _, ok := cache[r]; ok {
+			continue
+		}
+		cache[r] = struct{}{}
+		sample = append(sample, r)
+	}
+	return sample
 }

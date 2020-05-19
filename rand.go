@@ -27,3 +27,9 @@ func Float64() float64 {
 func Perm(n int) []int {
 	return ReadPerm(rand.Reader, n)
 }
+
+// Sample returns random k integers from a range [0 n). If k > n then only n
+// integers are returned.
+func Sample(n int, k int) []int {
+	return ReadSample(rand.Reader, n, k)
+}
