@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 
-	"bitbucket.org/advbet/rng"
+	"github.com/advbet/rng"
 )
 
 func main() {
