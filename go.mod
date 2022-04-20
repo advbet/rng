@@ -1,6 +1,6 @@
 module github.com/advbet/rng
 
-go 1.18
+go 1.17
 
 require github.com/stretchr/testify v1.5.1
 
